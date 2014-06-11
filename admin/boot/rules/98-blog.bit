@@ -42,43 +42,6 @@ if( ($url['controller']!=null) && ($url['action']!=null) )
 	$layout['controller']	= $url['controller'].'/'.$url['action'].'.bit';
 	$layout['view']			= $url['controller'].'/'.$url['action'].'.bit';
 
-	// Filter by Post
-	if( (($url['id_post']!==null) || ($url['post']!==null)) && !empty($post) )
-	{
-		$layout['title'] 		.= !empty($post['title'])?' - '.$post['title']:'';
-		$layout['description']	= $post['description'];
-		$layout['keywords']		= implode(',', array_map('array_pop', $post['tags']));
-		$layout['canonical'] 	= Url::post($post, true);
-
-		$where_am_i[1] = 'post';
-	}
-	// Filter by Page
-	elseif( (($url['id_page']!==null) || ($url['page']!==null)) && !empty($page) )
-	{
-		$layout['title'] 		.= !empty($page['title'])?' - '.$page['title']:'';
-		$layout['description']	= $page['description'];
-		$layout['keywords']		= $page['keywords'];
-		$layout['canonical'] 	= Url::page($page, true);
-
-		$where_am_i[1] = 'page';
-	}
-	// Filter by Category
-	elseif( ($url['category']!==null) && !empty($category) )
-	{
-		$layout['title'] 		.= ' - '.$category['name'];
-		$layout['canonical']	= Url::category($category['slug'], true);
-
-		$where_am_i[1] = 'category';
-	}
-	// Filter by Tag
-	elseif( ($url['tag']!==null) && !empty($tag) )
-	{
-		$layout['title'] 		.= ' - '.$url['tag'];
-		$layout['canonical']	= Url::tag($tag, true);
-
-		$where_am_i[1] = 'tag';
-	}
-
 	// Page 404
 	if(!file_exists(THEME_VIEWS.$layout['view']) || $page_not_found )
 	{
@@ -97,6 +60,43 @@ else
 		$layout['controller']	= 'page/view.bit';
 		$layout['view']			= 'page/view.bit';
 	}
+}
+
+// Filter by Post
+if( (($url['id_post']!==null) || ($url['post']!==null)) && !empty($post) )
+{
+	$layout['title'] 		.= !empty($post['title'])?' - '.$post['title']:'';
+	$layout['description']	= $post['description'];
+	$layout['keywords']		= implode(',', array_map('array_pop', $post['tags']));
+	$layout['canonical'] 	= Url::post($post, true);
+
+	$where_am_i[1] = 'post';
+}
+// Filter by Page
+elseif( (($url['id_page']!==null) || ($url['page']!==null)) && !empty($page) )
+{
+	$layout['title'] 		.= !empty($page['title'])?' - '.$page['title']:'';
+	$layout['description']	= $page['description'];
+	$layout['keywords']		= $page['keywords'];
+	$layout['canonical'] 	= Url::page($page, true);
+
+	$where_am_i[1] = 'page';
+}
+// Filter by Category
+elseif( ($url['category']!==null) && !empty($category) )
+{
+	$layout['title'] 		.= ' - '.$category['name'];
+	$layout['canonical']	= Url::category($category['slug'], true);
+
+	$where_am_i[1] = 'category';
+}
+// Filter by Tag
+elseif( ($url['tag']!==null) && !empty($tag) )
+{
+	$layout['title'] 		.= ' - '.$url['tag'];
+	$layout['canonical']	= Url::tag($tag, true);
+
+	$where_am_i[1] = 'tag';
 }
 
 if(isset($theme['template'][$url['controller']]))
